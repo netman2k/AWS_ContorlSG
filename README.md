@@ -13,6 +13,30 @@
 ![MyVPC](Resources/images/MyVPC.designinspector.svg)
 
 
+### Requirement
+
+In order to use it, you have to install boto3 python SDK and before using Boto3 and need to set up authentication credentials for your AWS account using either the IAM Console or the AWS CLI.
+
+```bash
+pip3 install boto3
+```
+
+```bash
+YOUR_ACCESS_KEY="<REPLACE WITH YOUR ACCESS KEY HERE>"
+YOUR_ACCESS_KEY="<REPLACE WITH YOUR SECRET KEY HERE>"
+REGION="<REPLACE WITH YOUR REGION HERE>"
+
+[ -f ~/.aws/credentials ] && ~/.aws/credentials{,.back}
+
+cat <<EOF > ~/.aws/credentials
+[default]
+aws_access_key_id = $YOUR_ACCESS_KEY
+aws_secret_access_key = $YOUR_SECRET_KEY
+region=$REGION
+EOF
+```
+
+Please refer this document for further: https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html
 
 ---
 
