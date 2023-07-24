@@ -262,7 +262,11 @@ def extract_interested_data_from_vpc(vpc):
         new_vpc['VpcName'] = 'Default'
     else:
         tag_name_value = [ tag for tag in vpc.get('Tags', []) if tag['Key'] == 'Name' ]
-        new_vpc['VpcName'] = tag_name_value[0]['Value']
+        if tag_name_value:
+            new_vpc['VpcName'] = tag_name_value[0]['Value']
+        else:
+            # Use VPC ID instead of the Tag Name value if this VPC has no tag Name/Value
+            new_vpc['VpcName'] = vpc['VpcId']
     
     return new_vpc
 
