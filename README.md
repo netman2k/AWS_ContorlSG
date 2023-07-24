@@ -18,7 +18,7 @@
 In order to use it, you have to install boto3 python SDK and before using Boto3 and need to set up authentication credentials for your AWS account using either the IAM Console or the AWS CLI.
 
 ```bash
-pip3 install boto3
+pip3 install boto3 requests
 ```
 
 ```bash
