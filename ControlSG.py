@@ -40,7 +40,7 @@ def get_ec2_client(region):
     return boto3.client('ec2', config=my_config)
 
 def get_logger(log_level='INFO',
-               log_file='application.log',
+               log_file=None,
                verbose_level=0):
     """Get logger object after initializing it.
     
@@ -57,10 +57,7 @@ def get_logger(log_level='INFO',
     logging_level = eval(f"logging.{log_level}")
     logger.setLevel(logging_level)
     
-    # create file handler which logs even debug messages
-    fh = logging.FileHandler(log_file)
-    fh.setLevel(logging_level)
-    
+   
     # create console handler with a higher log level
     ch = logging.StreamHandler()
     ch.setLevel(logging_level)
@@ -79,13 +76,18 @@ def get_logger(log_level='INFO',
         fh_formatter = logging.Formatter('%(asctime)s %(levelname)s %(processName)s[%(process)d] %(module)s:%(funcName)s(%(lineno)d) %(message)s')
         ch_formatter = logging.Formatter('%(asctime)s %(levelname)s %(processName)s[%(process)d] %(module)s:%(funcName)s(%(lineno)d) %(message)s')
 
-    fh.setFormatter(fh_formatter)
     ch.setFormatter(ch_formatter)
-    
+
     # add the handlers to the logger
-    logger.addHandler(fh)
     logger.addHandler(ch)    
-    
+
+    # create file handler which logs even debug messages
+    if log_file:
+        fh = logging.FileHandler(log_file)
+        fh.setLevel(logging_level)
+        fh.setFormatter(fh_formatter)
+        logger.addHandler(fh)
+     
     return logger
  
 def get_vpcs():
@@ -334,8 +336,7 @@ def parse_args():
                         help='Add port to allow. Allowing Syntax: TCP/1234, TCP/20000-30000, UDP/123')
     
     parser.add_argument('--log-file', action='store', 
-                        default="application.log", 
-                        help='specifying the log file')
+                        help='Log file to store logs')
     
     parser.add_argument('--log-level', action='store', 
                         choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
